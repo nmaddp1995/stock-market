@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <title>Chart the Stock Market</title>
+      <link rel="stylesheet" href="stylesheets/main.css" />
+     
+   </head>
+   <body>
+      <div class="container web">
+         <div class="row content">
+            <div class="span12">
+               <div id="chartDemoContainer" style="height: 500px; min-width: 500px; margin-bottom: 30px;"></div>
+               
+               <div class="row">
+                  <label>Search for a stock:</label>
+                  
+                  <input class="form-control" id="symbolsearch"  placeholder="Enter company name or symbol">
+                  <button class="btn btn-default" id="btn-search" onclick="searchStock()">Search</button>
+               </div>
+               <div id="stockButtons" style="margin: 5px;">
+               </div>
+            </div>
+         </div>
+      </div>
+      <script type="text/javascript" src="js/jquery.min.js"></script>
+      <script type="text/javascript" src="js/jquery-ui.min.js"></script>
+      <script type="text/javascript" src="js/purl.js"></script>
+      <script src="js/highstock.js"></script>
+      <script src="js/exporting.js"></script>
+      <script src="js/main.js"></script>
+      <script src="/socket.io/socket.io.js"></script>
+      <script src="js/stock.js"></script>
+      
+      <script>
+         function searchStock(){
+            symbol = document.getElementById('symbolsearch').value;
+            symbol= symbol.toUpperCase();
+            $.ajax({
+                     type: 'GET',
+                     url: '/getStocks?inp=' + symbol,
+                     success: function(data) {
+                     if(data.length==0){
+                        alert("This symbol doesn't exist");
+                        
+                     } else {
+                        socket.emit('chat message', symbol);
+                     }
+                      
+                     }
+                 });
+        
+         }
+         
+         
+         
+      </script>
+      
+
+   </body>
+</html>
